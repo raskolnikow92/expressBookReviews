@@ -28,7 +28,7 @@ regd_users.post("/login", (req,res) => {
         {username}, "access",{"expiresIn": 60*60}
     )
     req.session.authorization = {accessToken};
-    req.session.username = {username};
+    req.session.username = username;
     return res.status(200).json({ message: "Login successful", token: accessToken });
   }
   return res.status(403).json({message: "Wrong username or password"});
@@ -52,7 +52,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
     const username = req.session.username;
     const currentBook = books[isbn];
-    const filtered = Object.fromEntries(Object.entries(currentBook["reviews"]).filter(name=> name !== username));
+    const filtered = Object.fromEntries(Object.entries(currentBook["reviews"]).filter(([name])=> name !== username));
     currentBook["reviews"] = filtered;
     return res.status(200).json({message: "Review deleted"});
 });
